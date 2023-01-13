@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/Genoma/Genoma.gd" type="Script" id=1]
+
+[node name="Genoma" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Left" type="Line2D" parent="."]
+
+[node name="Right" type="Line2D" parent="."]
+
+[node name="Genes" type="Node2D" parent="."]
