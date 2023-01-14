@@ -14,6 +14,9 @@ var vec = {}
 const VOWELS = ["A","E","I","O","U","Y"]
 const CONSONANTS = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"]
 const ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+const SYLLABLE_PRECEDENCES = ["Senior","Junior"]
+const SYLLABLE_STYLES = ["Balance","Imbalance","Symmetry","Asymmetry"]
+const SYLLABLE_SIZES = [2,3]
 
 const NUMBER_SHIFT = 10
 const ALPHABET_END = 43
@@ -178,6 +181,7 @@ func get_random_element(arr_: Array):
 	var index_r = rng.randi_range(0, arr_.size()-1)
 	return arr_[index_r]
 
+
 func save_json(data_,file_path_,file_name_):
 	var file = File.new()
 	file.open(file_path_+file_name_+".json", File.WRITE)
@@ -264,8 +268,15 @@ func cross(x1_,y1_,x2_,y2_,x3_,y3_,x4_,y4_):
 
 
 func get_all_perms(arr_):
+	var duplicates = []
 	var result = []
-	perm(result, arr_,0)
+	
+	perm(duplicates, arr_, 0)
+	
+	for duplicate in duplicates:
+		if !result.has(duplicate):
+			result.append(duplicate)
+	
 	return result
 
 

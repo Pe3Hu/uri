@@ -141,6 +141,7 @@ func fill_mot() -> void:
 	
 	mot.fill_lettres()
 
+
 func get_cell(grid_: Vector2) -> Cell:
 	var index = grid_.y*cols+grid_.x
 	var cell = get_child(index)
