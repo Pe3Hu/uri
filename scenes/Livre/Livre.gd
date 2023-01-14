@@ -25,7 +25,6 @@ func init_empty_lettres() -> void:
 			data.grid = Vector2(_i,_j)
 			var new_lettre = lettre_scene.instance()
 			new_lettre.set_data(data)
-			#lettres[_i].append(new_lettre)
 			add_child(new_lettre)
 
 
@@ -36,11 +35,11 @@ func spawn_lettre() -> void:
 	var frame_index = num#Global.ALPHABET.find(letter)+NUMBER_SHIFT
 	var grid = Vector2(col,rows-1)
 	var direction = Vector2(0,-1)
-	var new_grid = lift_column(grid, direction)
+	var new_grid = lift_column(grid, direction, true)
 	
 	
 	if lettres[new_grid.x].size() < rows:
-		lettres[new_grid.x].insert(0,new_grid)
+		lettres[new_grid.x].append(new_grid)
 	
 	get_lettre(grid).set_frame(frame_index) 
 	
@@ -57,47 +56,32 @@ func select_random_column() -> int:
 	return lettre.grid.x
 
 
-func lift_column(grid_: Vector2, direction_: Vector2) -> Vector2:
-	var next = grid_
-	var frame_index = get_lettre(next).get_frame()
+func lift_column(grid_: Vector2, direction_: Vector2, forse_: bool) -> Vector2:
+	var next = Vector2(grid_.x,0)
 	
-	if frame_index >= ALPHABET_END:
-		return grid_
+	if direction_.y == 1:
+		next.y += rows-1
 	
-	next += direction_
-	var d = get_lettre(next)
-	frame_index = get_lettre(next).get_frame()
-	
-	while check_border(next) && frame_index < ALPHABET_END:
-		next += direction_
+	for _i in rows-1:
+		var lettre = get_lettre(next)
 		
-		if check_border(next):
-			frame_index = get_lettre(next).get_frame()
-	
-	if !check_border(next):
+		if lettre.get_frame() >= ALPHABET_END || forse_:
+			swap_lettres([lettre, get_lettre(next-direction_)])
+			
 		next -= direction_
 	
-	var result = next
+	var result = grid_
 	
-	while check_border(next-direction_):
-		lift_lettre(next, direction_)
-		next -= direction_
+	if lettres[grid_.x].size() > 0:
+		result.y -= lettres[grid_.x].size()
 	
 	return result
 
 
-func lift_lettre(next_: Vector2, direction_: Vector2)  -> void:
-	var previous = next_-direction_
-	var frame_index = get_lettre(previous).get_frame()
-	get_lettre(next_).set_frame(frame_index) 
-
-
-func _input(event):
-	if event is InputEventMouseButton:
-		Global.mouse_pressed = !Global.mouse_pressed
-		
-		if Global.mouse_pressed:
-			spawn_lettre()
+func swap_lettres(lettres_: Array) -> void:
+	var frame  = lettres_.front().get_frame()
+	lettres_.front().set_frame(lettres_.back().get_frame())
+	lettres_.back().set_frame(frame)
 
 
 func get_lettre(grid_: Vector2) -> Lettre:
@@ -108,18 +92,26 @@ func get_lettre(grid_: Vector2) -> Lettre:
 
 func budge_lettre(grid_: Vector2, direction_: Vector2) -> void:
 	if check_budge(grid_, direction_):
+		swap_lettres([get_lettre(grid_), get_lettre(grid_+direction_)])
+		lettres[grid_.x].erase(grid_)
+		lettres[grid_.x+direction_.x].append(grid_+direction_)
 		fall_column(grid_) 
 		fall_column(grid_+direction_) 
 
 
 func fall_column(grid_: Vector2) -> void:
+	var direction = Vector2(0,1)
 	var col = lettres[grid_.x]
-	print(col)
 	
-	while col.back().y != col.size():
-		for _i in range(grid_.y, col.size()-1, 1):
-			col[_i].y -= 1
-		print(col)
+	for _i in rows-1-grid_.y:
+		 lift_column(Vector2(grid_.x,0), direction, false)
+	
+	if col.size() == 1:
+		col[0].y = rows-1
+	else:
+		for _i in col.size()-1:
+			while col[_i].y > col[_i+1].y+1:
+				col[_i+1].y += 1
 
 
 func check_budge(grid_: Vector2, direction_: Vector2) -> bool:
@@ -128,10 +120,23 @@ func check_budge(grid_: Vector2, direction_: Vector2) -> bool:
 	if !check_border(budged):
 		return false
 	
-	var check = lettres[budged.x].size() < grid_.y
+	var check = rows-lettres[budged.x].size() > grid_.y
 	return check
 
 
 func check_border(grid_: Vector2) -> bool:
 	var check = grid_.x >= 0 && grid_.x < cols && grid_.y >= 0 && grid_.y < rows
 	return check
+
+
+func _input(event):
+	if event is InputEventMouseButton:
+		Global.mouse_pressed = !Global.mouse_pressed
+		
+		if Global.mouse_pressed:
+			spawn_lettre()
+			
+	if event is InputEventKey:
+	
+		if event.pressed and event.scancode == KEY_S:
+			budge_lettre(Vector2(0,2),Vector2(1,0))
