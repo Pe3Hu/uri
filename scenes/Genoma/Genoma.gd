@@ -1,4 +1,5 @@
 extends Node2D
+class_name Genoma
 
 
 var a = 100
@@ -16,7 +17,7 @@ func _ready():
 
 
 func set_sin_curve(line_: Line2D, shfit_: int) -> void:
-	line_.width = 1
+	line_.width = 3
 	line_.default_color = Color.black
 	var dots = []
 	var k = 3+(n*2-1)*2
@@ -42,11 +43,10 @@ func add_genes() -> void:
 		#x /= a
 		xs.append(x)
 		sum += x
-		print(x)
 	
 	for x in xs:
 		x /= 5
-	print(sum)
+	print(xs.size(),sum)
 
 
 func _draw():

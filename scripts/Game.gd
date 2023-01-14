@@ -23,6 +23,7 @@ func _input(event):
 		else:
 			Global.flag.click = !Global.flag.click
 
+
 func _process(delta):
 	pass
 

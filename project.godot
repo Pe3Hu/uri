@@ -8,10 +8,44 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Criatura",
+"language": "GDScript",
+"path": "res://scenes/Сriatura/Сriatura.gd"
+}, {
+"base": "Node2D",
+"class": "Gene",
+"language": "GDScript",
+"path": "res://scenes/Gene/Gene.gd"
+}, {
+"base": "Node2D",
+"class": "Genoma",
+"language": "GDScript",
+"path": "res://scenes/Genoma/Genoma.gd"
+}, {
+"base": "Control",
+"class": "Lettre",
+"language": "GDScript",
+"path": "res://scenes/Lettre/Lettre.gd"
+}, {
+"base": "GridContainer",
+"class": "Livre",
+"language": "GDScript",
+"path": "res://scenes/Livre/Livre.gd"
+} ]
+_global_script_class_icons={
+"Criatura": "",
+"Gene": "",
+"Genoma": "",
+"Lettre": "",
+"Livre": ""
+}
+
 [application]
 
 config/name="uri"
-run/main_scene="res://scenes/Genoma/Genoma.tscn"
+run/main_scene="res://scenes/Livre/Livre.tscn"
 config/icon="res://assets/icon.png"
 
 [autoload]

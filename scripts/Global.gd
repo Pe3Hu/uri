@@ -9,6 +9,11 @@ var obj = {}
 var node = {}
 var flag = {}
 var vec = {}
+const VOWELS = ["A","E","I","O","U","Y"]
+const CONSONANTS = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"]
+const ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+var mouse_pressed = false
+
 
 func init_num():
 	init_primary_key()
@@ -69,6 +74,7 @@ func init_num():
 	num.battlefield = {}
 	num.battlefield.combo = 3
 
+
 func init_primary_key():
 	num.primary_key = {}
 	num.primary_key.vicinity = 0
@@ -77,6 +83,7 @@ func init_primary_key():
 	num.primary_key.cultivator = 0
 	num.primary_key.sect = 0
 	num.primary_key.arena = 0
+
 
 func init_dict():
 	init_window_size()
@@ -87,12 +94,20 @@ func init_dict():
 	
 	dict.battlefield = {}
 	dict.battlefield.rule = ["Same Stage", "Full Span", "Ordered Elevation"]#"Same Sect"
+	
+	dict.feature = {
+		"chakra": ["capacity","quality","control"],
+		"evolution": ["genius","talent"],
+		"element": ["affinity","resistance"]
+	}
+
 
 func init_window_size():
 	dict.window_size = {}
 	dict.window_size.width = ProjectSettings.get_setting("display/window/size/width")
 	dict.window_size.height = ProjectSettings.get_setting("display/window/size/height")
 	dict.window_size.center = Vector2(dict.window_size.width/2, dict.window_size.height/2)
+
 
 func init_arr():
 	arr.sequence = {} 
@@ -118,6 +133,7 @@ func init_arr():
 	arr.elevation = ["Fossa","Hill","Peak"]
 	fill_talent()
 
+
 func fill_talent():
 	arr.talent = []
 	
@@ -127,16 +143,20 @@ func fill_talent():
 		for _j in pow(n,2):
 			arr.talent.append(_i)
 
+
 func init_node():
 	node.TimeBar = get_node("/root/Game/TimeBar") 
 	node.Game = get_node("/root/Game") 
+
 
 func init_flag():
 	flag.click = false
 	flag.stop = false
 
+
 func init_vec():
 	vec.map = dict.window_size.center - Vector2(num.map.cols,num.map.rows)*num.vicinity.a/2
+
 
 func _ready():
 	init_dict()
@@ -146,11 +166,18 @@ func _ready():
 	init_flag()
 	init_vec()
 
+
+func get_random_element(arr_: Array):
+	rng.randomize()
+	var index_r = rng.randi_range(0, arr_.size()-1)
+	return arr_[index_r]
+
 func save_json(data_,file_path_,file_name_):
 	var file = File.new()
 	file.open(file_path_+file_name_+".json", File.WRITE)
 	file.store_line(to_json(data_))
 	file.close()
+
 
 func load_json(file_path_,file_name_):
 	var file = File.new()
@@ -163,8 +190,10 @@ func load_json(file_path_,file_name_):
 	var data = parse_json(file.get_as_text())
 	return data
 
+
 func custom_log(value_,base_): 
 	return log(value_)/log(base_)
+
 
 func next_rank():
 	num.rank.current = (num.rank.current+1)%num.region.ranks
@@ -173,6 +202,7 @@ func next_rank():
 		for vicinity in obj.map.arr.region[num.rank.current][_i].arr.vicinity:
 			var hue = float(_i)/float(obj.map.arr.region[num.rank.current].size())
 			vicinity.color.background = Color().from_hsv(hue,1,1) 
+
 
 func cross_roads(roads_):
 	var capitals = []
@@ -202,6 +232,7 @@ func cross_roads(roads_):
 	else:
 		return false
 
+
 func cross(x1_,y1_,x2_,y2_,x3_,y3_,x4_,y4_):
 	var n = -1
 	
@@ -225,10 +256,12 @@ func cross(x1_,y1_,x2_,y2_,x3_,y3_,x4_,y4_):
 	
 	return first && second
 
+
 func get_all_perms(arr_):
 	var result = []
 	perm(result, arr_,0)
 	return result
+
 
 func perm(result_, arr_, l_):
 	if l_ >= arr_.size():
@@ -244,16 +277,19 @@ func perm(result_, arr_, l_):
 		perm(result_, arr_, l_+1)
 		swap(arr_, l_, _i)
 
+
 func swap(arr_, i_, j_):
 	var temp = arr_[i_]
 	arr_[i_] = arr_[j_]
 	arr_[j_] = temp
+
 
 func conjunction(n_, m_):
 	var result = factorial(n_)
 	result /= factorial(n_-m_)
 	result /= factorial(m_)
 	return result
+
 
 func factorial(n_):
 	var result = 1
