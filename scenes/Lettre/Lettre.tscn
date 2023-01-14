@@ -12,8 +12,9 @@ rect_min_size = Vector2( 64, 64 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 32, 32 )
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
-centered = false
 hframes = 5
 vframes = 9
 frame = 43

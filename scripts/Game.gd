@@ -3,7 +3,7 @@ extends Node
 
 func _ready():
 	Global.obj.map = Classes_Map.Map.new()
-	
+	$Pattern.fill_mot()
 #	Global.rng.randomize()
 #	var index_r = Global.rng.randi_range(0, options.size()-1)
 	
@@ -14,8 +14,15 @@ func _ready():
 #	var data = ""
 #	Global.save_json(data,path,name_)
 
+
 func _input(event):
 	if event is InputEventMouseButton:
+		Global.mouse_pressed = !Global.mouse_pressed
+		
+		if Global.mouse_pressed:
+			$Pattern.generate_sequance()
+			$Pattern.fill_mot()
+		
 		if Global.flag.click:
 			if Global.obj.keys().has("map"):
 				Global.next_rank()

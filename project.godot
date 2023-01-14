@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "Cell",
+"language": "GDScript",
+"path": "res://scenes/Cell/Cell.gd"
+}, {
 "base": "Node2D",
 "class": "Criatura",
 "language": "GDScript",
@@ -33,19 +38,32 @@ _global_script_classes=[ {
 "class": "Livre",
 "language": "GDScript",
 "path": "res://scenes/Livre/Livre.gd"
+}, {
+"base": "GridContainer",
+"class": "Mot",
+"language": "GDScript",
+"path": "res://scenes/Mot/Mot.gd"
+}, {
+"base": "GridContainer",
+"class": "Pattern",
+"language": "GDScript",
+"path": "res://scenes/Pattern/Pattern.gd"
 } ]
 _global_script_class_icons={
+"Cell": "",
 "Criatura": "",
 "Gene": "",
 "Genoma": "",
 "Lettre": "",
-"Livre": ""
+"Livre": "",
+"Mot": "",
+"Pattern": ""
 }
 
 [application]
 
 config/name="uri"
-run/main_scene="res://scenes/Livre/Livre.tscn"
+run/main_scene="res://scenes/Game.tscn"
 config/icon="res://assets/icon.png"
 
 [autoload]

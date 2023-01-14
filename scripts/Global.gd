@@ -9,9 +9,15 @@ var obj = {}
 var node = {}
 var flag = {}
 var vec = {}
+
+
 const VOWELS = ["A","E","I","O","U","Y"]
 const CONSONANTS = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Z"]
 const ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+
+const NUMBER_SHIFT = 10
+const ALPHABET_END = 43
+
 var mouse_pressed = false
 
 

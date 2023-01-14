@@ -1,19 +1,17 @@
 extends GridContainer
 class_name Livre
 
-var lettre_scene = preload("res://scenes/Lettre/Lettre.tscn")
+const lettre_scene = preload("res://scenes/Lettre/Lettre.tscn")
 
 var cols = 3
 var rows = 5
-const NUMBER_SHIFT = 10
-const ALPHABET_END = 43
-var num = 0
 
 var lettres = []
 
 func _ready():
 	columns = cols
 	init_empty_lettres()
+	fill_livre()
 
 
 func init_empty_lettres() -> void:
@@ -28,32 +26,18 @@ func init_empty_lettres() -> void:
 			add_child(new_lettre)
 
 
-func spawn_lettre() -> void:
-	var col = 0#select_random_column()
+func spawn_lettre(col_: int) -> void:
 	var vocabulary = ["A","B","B"]
 	var letter = Global.get_random_element(vocabulary)
-	var frame_index = num#Global.ALPHABET.find(letter)+NUMBER_SHIFT
-	var grid = Vector2(col,rows-1)
+	var frame_index = Global.ALPHABET.find(letter)+Global.NUMBER_SHIFT
+	var grid = Vector2(col_,rows-1)
 	var direction = Vector2(0,-1)
 	var new_grid = lift_column(grid, direction, true)
-	
 	
 	if lettres[new_grid.x].size() < rows:
 		lettres[new_grid.x].append(new_grid)
 	
 	get_lettre(grid).set_frame(frame_index) 
-	
-	num+=1
-	
-	if num >= NUMBER_SHIFT:
-		num = 0
-	
-	print(lettres)
-
-
-func select_random_column() -> int:
-	var lettre = Global.get_random_element(lettres.front())
-	return lettre.grid.x
 
 
 func lift_column(grid_: Vector2, direction_: Vector2, forse_: bool) -> Vector2:
@@ -65,7 +49,7 @@ func lift_column(grid_: Vector2, direction_: Vector2, forse_: bool) -> Vector2:
 	for _i in rows-1:
 		var lettre = get_lettre(next)
 		
-		if lettre.get_frame() >= ALPHABET_END || forse_:
+		if lettre.get_frame() >= Global.ALPHABET_END || forse_:
 			swap_lettres([lettre, get_lettre(next-direction_)])
 			
 		next -= direction_
@@ -114,6 +98,23 @@ func fall_column(grid_: Vector2) -> void:
 				col[_i+1].y += 1
 
 
+func fill_livre() -> void:
+	var stop = false
+	
+	while !stop:
+		var options = []
+		
+		for _i in lettres.size():
+			for _j in rows-lettres[_i].size():
+				options.append(_i)
+		
+		stop = options.size() == 0
+		
+		if !stop:
+			var col = Global.get_random_element(options)
+			spawn_lettre(col)
+
+
 func check_budge(grid_: Vector2, direction_: Vector2) -> bool:
 	var budged = grid_+direction_
 	
@@ -130,13 +131,12 @@ func check_border(grid_: Vector2) -> bool:
 
 
 func _input(event):
-	if event is InputEventMouseButton:
-		Global.mouse_pressed = !Global.mouse_pressed
-		
-		if Global.mouse_pressed:
-			spawn_lettre()
-			
-	if event is InputEventKey:
+#	if event is InputEventMouseButton:
+#		Global.mouse_pressed = !Global.mouse_pressed
+#
+#		if Global.mouse_pressed:
+#			pass
 	
+	if event is InputEventKey:
 		if event.pressed and event.scancode == KEY_S:
 			budge_lettre(Vector2(0,2),Vector2(1,0))
