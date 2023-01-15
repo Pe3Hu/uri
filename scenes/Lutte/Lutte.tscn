@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/Pattern/Pattern.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Livre/Livre.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Lutte/Lutte.gd" type="Script" id=4]
+
+[node name="Lutte" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="H" type="HBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="C" type="CenterContainer" parent="H"]
+margin_right = 36.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Pattern" parent="H/C" instance=ExtResource( 2 )]
+margin_left = 18.0
+margin_top = 20.0
+margin_right = 18.0
+margin_bottom = 20.0
+
+[node name="Livre" parent="H/C" instance=ExtResource( 3 )]
+margin_left = 18.0
+margin_top = 20.0
+margin_right = 18.0
+margin_bottom = 20.0
+
+[node name="Mots" type="GridContainer" parent="H"]
+margin_left = 40.0
+margin_right = 40.0
+margin_bottom = 40.0

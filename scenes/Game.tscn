@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/bars/ring.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=2]
 [ext_resource path="res://scripts/MapDraw.gd" type="Script" id=3]
-[ext_resource path="res://scenes/Livre/Livre.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Mot/Mot.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Pattern/Pattern.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Lutte/Lutte.tscn" type="PackedScene" id=4]
 
 [node name="Game" type="Node"]
 script = ExtResource( 2 )
@@ -31,12 +29,6 @@ tint_progress = Color( 0.964706, 0.584314, 0.0470588, 1 )
 visible = false
 script = ExtResource( 3 )
 
-[node name="Pattern" parent="." instance=ExtResource( 6 )]
-
-[node name="Mot" parent="." instance=ExtResource( 5 )]
-margin_left = 200.0
-margin_right = 200.0
-
-[node name="Livre" parent="." instance=ExtResource( 4 )]
+[node name="Lutte" parent="." instance=ExtResource( 4 )]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

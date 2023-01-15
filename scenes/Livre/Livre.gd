@@ -27,7 +27,7 @@ func init_empty_lettres() -> void:
 
 
 func spawn_lettre(col_: int) -> void:
-	var vocabulary = ["A","B","B"]
+	var vocabulary = ["A","B","B","B"]
 	var letter = Global.get_random_element(vocabulary)
 	var frame_index = Global.ALPHABET.find(letter)+Global.NUMBER_SHIFT
 	var grid = Vector2(col_,rows-1)

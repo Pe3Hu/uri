@@ -3,7 +3,7 @@ extends Node
 
 func _ready():
 	Global.obj.map = Classes_Map.Map.new()
-	$Pattern.fill_mot()
+	$Lutte.init_mots()
 #	Global.rng.randomize()
 #	var index_r = Global.rng.randi_range(0, options.size()-1)
 	
@@ -20,8 +20,8 @@ func _input(event):
 		Global.mouse_pressed = !Global.mouse_pressed
 		
 		if Global.mouse_pressed:
-			$Pattern.generate_sequance()
-			$Pattern.fill_mot()
+			$Lutte.generate_sequance()
+			$Lutte.init_mots()
 		
 		if Global.flag.click:
 			if Global.obj.keys().has("map"):

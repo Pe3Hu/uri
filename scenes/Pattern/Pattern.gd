@@ -2,20 +2,21 @@ extends GridContainer
 class_name Pattern
 
 var cell_scene = preload("res://scenes/Cell/Cell.tscn")
+var mot_scene = preload("res://scenes/Mot/Mot.tscn")
 
 var cols = 3
 var rows = 5
 
 var cells = []
 var sequance = []
-var mot
+var mots
 var livre
 
 func _ready():
 	columns = cols
 	init_empty_cells()
 	generate_sequance()
-	mot = get_parent().get_node("Mot")
+	mots = get_parent().get_parent().get_node("Mots")
 	livre = get_parent().get_node("Livre")
 
 
@@ -132,15 +133,51 @@ func get_directions() -> void:
 		cell.set_frame(frame)
 
 
-func fill_mot() -> void:
-	mot.lettres = []
+func add_mot(anchor_: Vector2) -> void:
+	var new_mot = mot_scene.instance()
 	
 	for grid in sequance:
-		var lettre = livre.get_lettre(grid)
-		mot.lettres.append(lettre)
+		var lettre = livre.get_lettre(grid+anchor_)
+		new_mot.value += lettre.value
+		new_mot.lettres.append(lettre)
 	
-	mot.fill_lettres()
+	var dublicate = false
+	
+	for child in mots.get_children():
+		if new_mot.value == child.value:
+			dublicate = true
+			break
+	
+	if !dublicate:
+		mots.add_child(new_mot)
+		new_mot.fill_lettres()
 
+
+func init_all_anchors() -> Array:
+	var anchors = []
+	var min_grid = Vector2.ONE*max(rows,cols)
+	var max_grid = Vector2.ZERO
+	
+	for grid in sequance:
+		if grid.x > max_grid.x:
+			max_grid.x = grid.x
+		if grid.y > max_grid.y:
+			max_grid.y = grid.y
+		if grid.x < min_grid.x:
+			min_grid.x = grid.x
+		if grid.y < min_grid.y:
+			min_grid.y = grid.y
+	
+	var sequance_size = max_grid-min_grid
+	var shifts = +Vector2(cols,rows)-sequance_size
+	
+	for _i in shifts.x:
+		for _j in shifts.y:
+			var anchor = min_grid+Vector2(_i,_j)
+			anchors.append(anchor)
+			add_mot(anchor)
+	
+	return anchors
 
 func get_cell(grid_: Vector2) -> Cell:
 	var index = grid_.y*cols+grid_.x

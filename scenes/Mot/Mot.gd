@@ -10,6 +10,7 @@ var anchor: Vector2 = Vector2.ZERO
 
 var lettres = []
 var permutations = []
+var value = ""
 
 
 func _ready():
@@ -35,7 +36,6 @@ func fill_lettres() -> void:
 	var sizes = get_all_sizes()
 	get_all_syllabes(sizes)
 	fill_permutations()
-	print()
 
 
 func get_all_sizes() -> Array:

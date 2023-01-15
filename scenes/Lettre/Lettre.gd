@@ -26,9 +26,3 @@ func get_frame() -> int:
 
 func set_data(data_: Dictionary) -> void:
 	grid = data_.grid
-
-
-
-
-
-
