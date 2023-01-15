@@ -2,12 +2,7 @@
 
 [ext_resource path="res://scenes/Mot/Mot.gd" type="Script" id=1]
 
-[node name="Mot" type="Control"]
+[node name="Mot" type="VBoxContainer"]
 script = ExtResource( 1 )
 
-[node name="Permutations" type="VBoxContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="Word" type="GridContainer" parent="Permutations"]
-margin_right = 40.0
+[node name="Word" type="GridContainer" parent="."]
